@@ -34,8 +34,8 @@
 								href="${contextPath}/order/list">List all order</a></li>
 							<li><a class="dropdown-item"
 								href="${contextPath}/order/add">Add order</a></li>
-							<%-- <li><a class="dropdown-item"
-								href="${contextPath}/order/edit">Edit order</a></li> --%>
+							<li><a class="dropdown-item"
+								href="${contextPath}/order/edit">Edit order</a></li>
 						</ul>
 					
 					<li class="nav-item dropdown"><a

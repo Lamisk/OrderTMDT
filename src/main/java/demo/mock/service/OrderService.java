@@ -13,18 +13,26 @@ public class OrderService {
 	@Autowired
 	private OrderRepository repo;
 
+
+	public OrderItem get(int id) {
+		return repo.getById(id);
+	}
+	
 	public void save(OrderItem obj) {
 		repo.save(obj);
 	}
-	
-	public List<OrderItem> listAll(){
+
+	public List<OrderItem> listAll() {
 		return repo.findAll();
 	}
-	
+
+	public void deleteById(Integer id) {
+		repo.deleteById(id);
+	}
 //	public List<Product> listAllProduct(){
 //		return repo.findAllProduct();
 //	}
-	
+
 //	public List<Customer> listAllCustomer(){
 //		return repo.findAllCustomer();
 //	}

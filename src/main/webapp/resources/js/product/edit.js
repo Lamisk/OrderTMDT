@@ -15,7 +15,7 @@ $(function() {
 						let old_name = name.text();
 						let old_des = des.text();
 						let old_price = price.text();
-						console.log(old_name + " " + old_des + " " + old_price);
+//						console.log(old_name + " " + old_des + " " + old_price);
 						name.html("<input name='edit_name' value='" + old_name
 								+ "'>");
 						des.html("<input name='edit_des' value='" + old_des
@@ -70,7 +70,7 @@ $(function() {
 		let des = currentRow.find("input[name='edit_des']").val();
 		let code = currentRow.find("td[name='edit_des']").text();
 		let price = currentRow.find("input[name='edit_price']").val();
-		console.log(price);
+//		console.log(price);
 		let data = {
 			id : id,
 			name : name,
