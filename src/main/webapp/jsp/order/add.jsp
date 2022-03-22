@@ -45,7 +45,7 @@
 				<label for="product" class="input-group-text">Product</label>
 			</div>
 			<input class="form-control" id="product_filter" name="product_filter"
-				type="text" placeholder="Filter product by name" value="${prename}"> 
+				type="text" placeholder="Filter product by name" value="${p_name}"> 
 				
 				<select
 				class="form-select" name="product_select">

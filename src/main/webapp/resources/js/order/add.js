@@ -5,7 +5,8 @@ $(function() {
 				.val();
 		obj_select.val(default_value);
 		$(obj_select).find("option").each(function() {
-			let txt = $(this).attr("value");
+//			let txt = $(this).attr("value");
+			let txt = $(this).text().split("|")[1];
 			if (txt) {
 				txt = txt.toUpperCase();
 				if (txt.indexOf(filter_txt) > -1) {
@@ -86,6 +87,7 @@ $(function() {
 						`);
 				 $("#popup").modal("show");
 				 $('#popup').on('click', 'button[name="save"]', function() {
+					 $("#popup").modal("toggle");
 						let url = $(location).attr('origin')+"/"+$(location).attr('pathname').split("/")[1]+"/order/add";
 						$.ajax({
 							type : "POST",

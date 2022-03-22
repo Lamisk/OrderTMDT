@@ -21,17 +21,16 @@ public class OrderItem {
 //	1 cart co the chua nhieu product
 //	1 product chi thuoc ve 1 cart
 
-	@ManyToOne(fetch = FetchType.EAGER)
-
+	
 //	Dat lai ten khoa khoa, 
 //	mac dinh hibernate se gen ten khoa ngoai 
 //	dua tren ten thuoc tinh
+	@ManyToOne(fetch = FetchType.EAGER)
 	@JoinColumn(name = "product_id", nullable = false)
 	private Product product;
 
 //	1 customer  co the co nhieu item duoc oerder
 	@ManyToOne(fetch = FetchType.EAGER)
-
 	@JoinColumn(name = "customer_id", nullable = false)
 	private Customer customer;
 
@@ -81,12 +80,21 @@ public class OrderItem {
 		this.quantity = quantity;
 	}
 
-	public OrderItem(Integer id, Product product, Customer customer, int quantity) {
+	
+
+	public OrderItem(Integer id, Product product, Long total) {
 		super();
 		this.id = id;
 		this.product = product;
-		this.customer = customer;
+		this.total = total;
+	}
+
+	public OrderItem(
+			@Min(value = 0, message = "Min quantity is 0") @Max(value = 100, message = "Max quantity is 100 ") int quantity,
+			Long total) {
+		super();
 		this.quantity = quantity;
+		this.total = total;
 	}
 
 	public OrderItem() {
@@ -95,7 +103,9 @@ public class OrderItem {
 
 	@Override
 	public String toString() {
-		return "Order [product=" + product + ", customer=" + customer + ", quantity=" + quantity + "]";
+		return "OrderItem [id=" + id + ", quantity=" + quantity + ", total=" + total + "]";
 	}
+
+	
 
 }

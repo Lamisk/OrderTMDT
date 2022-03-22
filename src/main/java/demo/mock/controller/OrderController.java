@@ -2,6 +2,7 @@ package demo.mock.controller;
 
 import java.util.List;
 
+import javax.persistence.EntityManager;
 import javax.servlet.http.HttpServletRequest;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -35,14 +36,24 @@ public class OrderController {
 	@Autowired
 	private CustomerService customerService;
 
-	@GetMapping(value = { "/add/{precode}", "/add" })
+	@GetMapping(value = { "/add/{p_id}", "/add" })
 	public String add_get(Model model, HttpServletRequest request,
-			@PathVariable(value = "precode", required = false) String code) throws Exception {
+			@PathVariable(value = "p_id", required = false) String p_id) throws Exception {
 
-		if (code == null) {
-			code = "";
+		if (p_id == null) {
+			p_id = "";
+		} else {
+
+			int product_id = Integer.parseInt(p_id);
+			String p_name = productService.get(product_id).getName();
+			if (p_name != null) {
+				model.addAttribute("p_name", p_name);
+			} else {
+				model.addAttribute("p_name", p_name);
+			}
+
 		}
-		model.addAttribute("precode", code);
+
 		List<Product> products = productService.listAll();
 		List<Customer> customers = customerService.listAll();
 		model.addAttribute("customers", customers);
@@ -111,22 +122,21 @@ public class OrderController {
 	public ResponseEntity<String> update(@RequestBody MultiValueMap<String, String> data) throws Exception {
 
 		try {
+		
 			String id = data.getFirst("id");
-			
+			int o_id = Integer.parseInt(id);
 			int quantity = Integer.parseInt(data.getFirst("quantity"));
-			System.out.println(id+" "+quantity);
-			OrderItem orderItem = orderSerive.get(Integer.parseInt(id));
-			System.out.println("BEFORE: " + orderItem);
-//			orderItem.setQuantity(quantity);
-//			Long total = quantity * orderItem.getProduct().getPrice();
-//			orderItem.setTotal(total);
-//
-//			System.out.println(orderItem);
-//			orderSerive.save(orderItem);
+//			System.out.println(id + " " + quantity);
+			OrderItem orderItem = orderSerive.get(o_id);
+			System.out.println("Order id: "+o_id);
+			System.out.println("Quantity: "+orderItem.getQuantity());
+			orderItem.setQuantity(quantity);
+			orderSerive.save(orderItem);
 
 			return new ResponseEntity<>("Successfully updated", HttpStatus.OK);
 		} catch (Exception e) {
 			System.out.println(e);
+			e.printStackTrace();
 
 			return new ResponseEntity<>("Failed updated", HttpStatus.NOT_ACCEPTABLE);
 		}

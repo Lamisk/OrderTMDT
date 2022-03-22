@@ -29,8 +29,6 @@ import org.hibernate.validator.constraints.Length;
 ///^[a-zA-Z]+(?:\s[a-zA-Z]+)+$/
 
 public class Customer {
-	
-	
 
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -51,7 +49,7 @@ public class Customer {
 
 	@Column(length = 10, unique = true)
 	@Pattern(regexp = "^[0-9]+$", message = "Phone contain non-numeric")
-	 @Length(min = 10, max = 10,message = "Length of phone must be 10")
+	@Length(min = 10, max = 10, message = "Length of phone must be 10")
 	private String phone;
 
 	@Enumerated(EnumType.STRING)

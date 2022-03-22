@@ -238,7 +238,7 @@ $(function() {
 													.remove();
 //											
 											currentRow.find("button[name='cancel']").remove();
-//											console.log("C: ",currentRow.attr("id"));
+// console.log("C: ",currentRow.attr("id"));
 											 currentRow.find("button[name='delete']").show();
 											currentRow.find(
 													'button[name="edit"]')
@@ -295,7 +295,7 @@ $(function() {
 
 					success : function(response) {
 						$("#popup").modal('toggle');
-//						currentRow.remove();
+// currentRow.remove();
 						location.reload();
 					},
 					fail : function(xhr, status, error) {

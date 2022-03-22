@@ -7,18 +7,19 @@ $(function() {
 					'button[name="edit"]',
 					function() {
 
-						let currentRow = $(this).closest("tr");
-
-						 currentRow.find("button[name='delete']").hide();
-						let price = currentRow.find("td[name='price']");
-						let quantity = currentRow.find("td[name='quantity']");
-						let total = currentRow.find("td[name='total']");
-
+						 currentRow = $(this).closest("tr");
+						currentRow.find("button[name='delete']").hide();
 						
-						let old_quantity = quantity.text();
-						let old_total = total.text();
 
-						
+						 price = currentRow.find("td[name='price']");
+						 quantity = currentRow.find("td[name='quantity']");
+						 total = currentRow.find("td[name='total']");
+
+						// SAVE OLD
+						 old_quantity = quantity.text();
+						 old_total = total.text();
+
+// CHANGE TYPE
 						quantity
 								.html("<input name='edit_quantity' type='number' min=0 max=100 value='"
 										+ old_quantity + "'>");
@@ -32,20 +33,21 @@ $(function() {
 								.prepend(
 										"<button type='button' class='btn btn-outline-success' name='confirm'>Confirm</button>");
 
-						
+// ADD HIDDEN
 						currentRow
 								.append("<input type='hidden' name='hidden_old_quantity' value='"
 										+ old_quantity + "'>");
 						currentRow
 								.append("<input type='hidden' name='hidden_old_total' value='"
 										+ old_total + "'>");
+						
 						$(this).hide()
 						// FOR EDIT PRICE
-						$("input[name='edit_quantity']")
+						currentRow.find("input[name='edit_quantity']")
 								.on(
 										'keydown',
 										function(event) {
-											console.log("ASD");
+											
 											if (!((48 <= event.which && event.which <= 57)
 													|| (96 <= event.which && event.which <= 105) || event.which <= 31)) {
 												event.preventDefault();
@@ -56,18 +58,24 @@ $(function() {
 										$(this).val(100);
 
 									}
+									 currentRow = $(this).closest("tr");
+									 price = currentRow.find("td[name='price']");
+									 total = currentRow.find("td[name='total']");
 									total.text(price.text() * $(this).val());
 								}).on('change', function() {
+									 currentRow = $(this).closest("tr");
+									 price = currentRow.find("td[name='price']");
+									 total = currentRow.find("td[name='total']");
 									total.text(price.text() * $(this).val());
 								});
 					});
 
 	$('tbody').on('click', 'button[name="confirm"]', function(e) {
 
-		let currentRow = $(this).closest("tr");
-		let url = $(location).attr('href');
+		 currentRow = $(this).closest("tr");
+		 url = $(location).attr('href');
 
-		let id = currentRow.attr("id");
+		 id = currentRow.attr("id");
 		p_name = currentRow.find("td[name='p_name']").text();
 		c_name = currentRow.find("td[name='c_name']").text();
 		price = currentRow.find("td[name='price']").text();
@@ -77,7 +85,7 @@ $(function() {
 	 
 	
 		
-		let data = {
+		 data = {
 			id : id,
 			quantity : quantity
 		};
@@ -157,27 +165,26 @@ $(function() {
 			.on(
 					'click',
 					'button[name="cancel"]',
-					function() {
-						let currentRow = $(this).closest("tr");
+					function(e) {
+						e.stopImmediatePropagation();
+						currentRow = $(this).closest("tr");
 						p_name = currentRow.find("td[name='p_name']").text();
 						c_name = currentRow.find("td[name='c_name']").text();
 						price = currentRow.find("td[name='price']").text();
-						
-					
-						// let name = currentRow.find("input[name='edit_name']").val();
-						
-						let quantity = currentRow
+										
+						 quantity = currentRow
 								.find("input[name='edit_quantity']");
 
-					
-						
-						let old_quantity = currentRow.find(
-								"input:hidden[name='hidden_old_quantity']")
+						 old_quantity = currentRow.find(
+								"input[name='hidden_old_quantity']")
 								.val();
 						
+						 old_total = currentRow.find(
+						"input[name='hidden_old_total']")
+						.val();
 
 						$("#popup .modal-title").html("Confirm");
-						$("#popup .modal-body").html(`Will you delete this order?<br\>
+						$("#popup .modal-body").html(`Will you reset this order?<br\>
 								<div class="table-responsive">
 								 <table class='table table-bordered' >
 								 <tbody>
@@ -200,7 +207,7 @@ $(function() {
 										 </tr>
 										 						  <tr>
 											 <th scope="row">Total</th>
-											 <td>${price*quantity} VND</td>
+											 <td>${old_total} VND</td>
 										 </tr>
 										 </tbody>
 								 </table>
@@ -214,27 +221,24 @@ $(function() {
 										function() {
 											$("#popup").modal("toggle");
 											
-											currentRow.find(
-													"td[name='quantity']")
-													.text(old_quantity);
-											currentRow.find("td[name='total']")
-													.text($("input[name='hidden_old_total']").val());
 											
+// RESTOR OLD
+											currentRow.find("td[name='total']")
+													.text(old_total);
+											currentRow.find("td[name='quantity']")
+											.text(old_quantity);
+											
+// REMOVE HIDDEN
+											currentRow.find("input[name='hidden_old_total']").remove();
+											currentRow.find("input[name='hidden_old_quantity']").remove();
+											
+// SHOW/HIDE/REMOVE BUTTON
 											currentRow.find(
 													'button[name="confirm"]')
 													.remove();
-											currentRow
-													.find(
-															"input:hidden[name='hidden_old_name']")
-													.remove();
-											currentRow
-													.find(
-															"input:hidden[name='hidden_old_des']")
-													.remove();
-											currentRow
-													.find(
-															"input:hidden[name='hidden_old_price']")
-													.remove();
+											
+											
+											
 											currentRow.find("button[name='cancel']").remove();
 											currentRow.find(
 													'button[name="edit"]')
@@ -249,9 +253,9 @@ $(function() {
 
 	$('tbody').on('click', 'button[name="delete"]', function() {
 
-		let currentRow = $(this).closest("tr");
-		let id = currentRow.attr("id");
-		let url = $(location).attr('href') + "/" + id;
+		 currentRow = $(this).closest("tr");
+		 id = currentRow.attr("id");
+		 url = $(location).attr('href') + "/" + id;
 
 		
 		$(function() {
@@ -304,7 +308,7 @@ $(function() {
 
 					success : function(response) {
 						$("#popup").modal('toggle');
-//						currentRow.remove();
+// currentRow.remove();
 						location.reload();
 					},
 					fail : function(xhr, status, error) {
