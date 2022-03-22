@@ -45,21 +45,21 @@ public class ServiceCommonFunction<T> implements ServiceInter<T> {
 
 	}
 
-	@Override
-	public List<T> findAllByCode(String code) {
-		return repo.findAllByCode(code);
-	}
+//	@Override
+//	public List<T> findAllByCode(String code) {
+//		return repo.findAllByCode(code);
+//	}
+//
+//	@Override
+//	public T findExactlyByCode(String code) {
+//		return repo.findByCode(code);
+//
+//	}
 
 	@Override
-	public T findExactlyByCode(String code) {
-		return repo.findByCode(code);
+	public List<T> findAllByName(String name) {
 
-	}
-
-	@Override
-	public List<T> findRelativeByCode(String code_part) {
-
-		return repo.findByCodeContains(code_part);
+		return repo.findByNameContains(name);
 	}
 
 }

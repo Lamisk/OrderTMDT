@@ -1,3 +1,4 @@
+//ORDER
 $(function() {
 
 	$('tbody')
@@ -8,22 +9,16 @@ $(function() {
 
 						let currentRow = $(this).closest("tr");
 
-						// let p_name = currentRow.find("td[name='p_name']");
-						// let p_code = currentRow.find("td[name='p_code']");
+						 currentRow.find("button[name='delete']").hide();
 						let price = currentRow.find("td[name='price']");
 						let quantity = currentRow.find("td[name='quantity']");
 						let total = currentRow.find("td[name='total']");
 
-						// let old_p_name = p_name.text();
-						// let old_p_code = p_code.text();
+						
 						let old_quantity = quantity.text();
 						let old_total = total.text();
 
-						/*
-						 * p_name.html("<input name='edit_p_name' value='" +
-						 * old_p_name + "'>"); p_code.html("<input
-						 * name='edit_p_code' value='" + old_p_code + "'>");
-						 */
+						
 						quantity
 								.html("<input name='edit_quantity' type='number' min=0 max=100 value='"
 										+ old_quantity + "'>");
@@ -37,13 +32,7 @@ $(function() {
 								.prepend(
 										"<button type='button' class='btn btn-outline-success' name='confirm'>Confirm</button>");
 
-						/*
-						 * currentRow .append("<input type='hidden'
-						 * name='hidden_old_p_name' value='" + old_p_name +
-						 * "'>"); currentRow .append("<input type='hidden'
-						 * name='hidden_old_p_code' value='" + old_p_code +
-						 * "'>");
-						 */
+						
 						currentRow
 								.append("<input type='hidden' name='hidden_old_quantity' value='"
 										+ old_quantity + "'>");
@@ -79,21 +68,52 @@ $(function() {
 		let url = $(location).attr('href');
 
 		let id = currentRow.attr("id");
-		// let name = currentRow.find("input[name='edit_name']").val();
-		// let des = currentRow.find("input[name='edit_des']").val();
-		// let code = currentRow.find("td[name='edit_des']").text();
-		// let price = currentRow.find("input[name='edit_price']").val();
-		let quantity = currentRow.find("input[name='edit_quantity']").val();
-		console.log(quantity);
+		p_name = currentRow.find("td[name='p_name']").text();
+		c_name = currentRow.find("td[name='c_name']").text();
+		price = currentRow.find("td[name='price']").text();
+		total = currentRow.find("td[name='total']").text();
+		quantity = currentRow.find("input[name='edit_quantity']").val();
+		
+	 
+	
 		
 		let data = {
 			id : id,
 			quantity : quantity
 		};
 		$("#popup .modal-title").html("Confirm");
-		$("#popup .modal-body").html("You will update this order");
+		$("#popup .modal-body").html(`Will you update this order?<br\>
+				<div class="table-responsive">
+				 <table class='table table-bordered' >
+				 <tbody>
+						
+						  <tr>
+							 <th scope="row">Customer name</th>
+							 <td>${c_name}</td>
+						 </tr>
+						  <tr>
+							 <th scope="row">Product name</th>
+							 <td class="text-break">${p_name}</td>
+						 </tr>
+						 <tr>
+							 <th scope="row">Price</th>
+							 <td>${price} VND</td>
+						 </tr>
+						  <tr>
+							 <th scope="row">Quantity</th>
+							 <td>${quantity}</td>
+						 </tr>
+						 						  <tr>
+							 <th scope="row">Total</th>
+							 <td>${total}</td>
+						 </tr>
+						 </tbody>
+				 </table>
+				 </div>
+				`);
 		$("#popup").modal("show");
 		$('#popup').on('click', 'button[name="save"]', function() {
+			$('#popup').modal("toggle");
 			$.ajax({
 				url : url,
 				type : 'PATCH',
@@ -101,19 +121,31 @@ $(function() {
 				success : function(response) {
 					location.reload();
 				},
-				fail : function(reponse) {
-					$("#popup .modal-title").html("Alert");
-					$("#popup .modal-body").html(xhr.responseText);
-					$("button[name='save']").hide();
-					$('#popup').on('hidden.bs.modal', function() {
+				fail : function(xhr, status, error) {
+					$("#popup_error .modal-title").html("Alert");
+					$("#popup_error .modal-body").html(xhr.responseText);
+//		
+					 $("#popup_error").modal("show");
+//				
+					 $('#popup_error').on('click','button[name="close_error"]',function(){
+//						
+						 $('#popup_error').modal("toggle");
+					 });
+					$('#popup_error').on('hidden.bs.modal', function() {
 						location.reload();
 					});
 				},
 				error : function(xhr, status, error) {
-					$("#popup .modal-title").html("Alert");
-					$("#popup .modal-body").html(xhr.responseText);
-					$("button[name='save']").hide();
-					$('#popup').on('hidden.bs.modal', function() {
+					$("#popup_error .modal-title").html("Alert");
+					$("#popup_error .modal-body").html(xhr.responseText);
+//		
+					 $("#popup_error").modal("show");
+//				
+					 $('#popup_error').on('click','button[name="close_error"]',function(){
+//						
+						 $('#popup_error').modal("toggle");
+					 });
+					$('#popup_error').on('hidden.bs.modal', function() {
 						location.reload();
 					});
 				},
@@ -127,28 +159,53 @@ $(function() {
 					'button[name="cancel"]',
 					function() {
 						let currentRow = $(this).closest("tr");
-						let cancle_btn = $(this);
-						let p_name = currentRow
-								.find("input[name='edit_p_name']");
-						let p_code = currentRow
-								.find("input[name='edit_p_code']");
+						p_name = currentRow.find("td[name='p_name']").text();
+						c_name = currentRow.find("td[name='c_name']").text();
+						price = currentRow.find("td[name='price']").text();
+						
+					
+						// let name = currentRow.find("input[name='edit_name']").val();
+						
 						let quantity = currentRow
 								.find("input[name='edit_quantity']");
 
-						let old_p_name = currentRow.find(
-								"input:hidden[name='hidden_old_p_name']").val();
-						let old_p_code = currentRow.find(
-								"input:hidden[name='hidden_old_p_code']").val();
+					
+						
 						let old_quantity = currentRow.find(
 								"input:hidden[name='hidden_old_quantity']")
 								.val();
-						let old_total = currentRow.find(
-								"input:hidden[name='hidden_old_total']").val();
+						
 
 						$("#popup .modal-title").html("Confirm");
-						$("#popup .modal-body").html(
-								"You will cancle this update action");
-
+						$("#popup .modal-body").html(`Will you delete this order?<br\>
+								<div class="table-responsive">
+								 <table class='table table-bordered' >
+								 <tbody>
+										
+										  <tr>
+											 <th scope="row">Customer name</th>
+											 <td>${c_name}</td>
+										 </tr>
+										  <tr>
+											 <th scope="row">Product name</th>
+											 <td class="text-break">${p_name}</td>
+										 </tr>
+										 <tr>
+											 <th scope="row">Price</th>
+											 <td>${price} VND</td>
+										 </tr>
+										  <tr>
+											 <th scope="row">Quantity</th>
+											 <td>${old_quantity}</td>
+										 </tr>
+										 						  <tr>
+											 <th scope="row">Total</th>
+											 <td>${price*quantity} VND</td>
+										 </tr>
+										 </tbody>
+								 </table>
+								 </div>
+								`);
 						$("#popup").modal("show");
 						$("#popup")
 								.on(
@@ -156,17 +213,13 @@ $(function() {
 										"button[name=save]",
 										function() {
 											$("#popup").modal("toggle");
-											currentRow
-													.find("td[name='p_name']")
-													.text(old_p_name);
-											currentRow
-													.find("td[name='p_code']")
-													.text(old_p_code);
+											
 											currentRow.find(
 													"td[name='quantity']")
 													.text(old_quantity);
 											currentRow.find("td[name='total']")
-													.text(old_total);
+													.text($("input[name='hidden_old_total']").val());
+											
 											currentRow.find(
 													'button[name="confirm"]')
 													.remove();
@@ -182,10 +235,11 @@ $(function() {
 													.find(
 															"input:hidden[name='hidden_old_price']")
 													.remove();
-											cancle_btn.remove();
+											currentRow.find("button[name='cancel']").remove();
 											currentRow.find(
 													'button[name="edit"]')
 													.show();
+											 currentRow.find("button[name='delete']").show();
 
 										});
 
@@ -199,13 +253,50 @@ $(function() {
 		let id = currentRow.attr("id");
 		let url = $(location).attr('href') + "/" + id;
 
-		console.log(id);
+		
 		$(function() {
-
+			
+			id = currentRow.attr("id");
+			p_name = currentRow.find("td[name='p_name']").text();
+			c_name = currentRow.find("td[name='c_name']").text();
+			price = currentRow.find("td[name='price']").text();
+			total = currentRow.find("td[name='total']").text();
+			quantity = currentRow.find("td[name='quantity']").text();
+			
 			$("#popup .modal-title").html("Confirm");
-			$("#popup .modal-body").html("You will delete this order");
+			$("#popup .modal-body").html(`Will you delete this order?<br\>
+					<div class="table-responsive">
+					 <table class='table table-bordered' >
+					 <tbody>
+							
+							  <tr>
+								 <th scope="row">Customer name</th>
+								 <td>${c_name}</td>
+							 </tr>
+							  <tr>
+								 <th scope="row">Product name</th>
+								 <td class="text-break">${p_name}</td>
+							 </tr>
+							 <tr>
+								 <th scope="row">Price</th>
+								 <td>${price} VND</td>
+							 </tr>
+							  <tr>
+								 <th scope="row">Quantity</th>
+								 <td>${quantity}</td>
+							 </tr>
+							 						  <tr>
+								 <th scope="row">Total</th>
+								 <td>${total}</td>
+							 </tr>
+							 </tbody>
+					 </table>
+					 </div>
+					`);
 			$("#popup").modal("show");
-			$('#popup').on('click', 'button[name="save"]', function() {
+			$('#popup').on('click', 'button[name="save"]', function(e) {
+				e.stopImmediatePropagation();
+				$("#popup").modal("toggle");
 				$.ajax({
 					url : url,
 					type : 'DELETE',
@@ -213,25 +304,37 @@ $(function() {
 
 					success : function(response) {
 						$("#popup").modal('toggle');
-						currentRow.remove();
+//						currentRow.remove();
+						location.reload();
 					},
-					fail : function(reponse) {
-						$("#popup .modal-title").html("Alert");
-						$("#popup .modal-body").html(xhr.responseText);
-						$("button[name='save']").hide();
-						$('#popup').on('hidden.bs.modal', function() {
+					fail : function(xhr, status, error) {
+						$("#popup_error .modal-title").html("Alert");
+						$("#popup_error .modal-body").html(xhr.responseText);
+//			
+						 $("#popup_error").modal("show");
+//					
+						 $('#popup_error').on('click','button[name="close_error"]',function(){
+//							
+							 $('#popup_error').modal("toggle");
+						 });
+						$('#popup_error').on('hidden.bs.modal', function() {
 							location.reload();
 						});
-
 					},
 					error : function(xhr, status, error) {
-						$("#popup .modal-title").html("Alert");
-						$("#popup .modal-body").html(xhr.responseText);
-						$("button[name='save']").hide();
-						$('#popup').on('hidden.bs.modal', function() {
+						$("#popup_error .modal-title").html("Alert");
+						$("#popup_error .modal-body").html(xhr.responseText);
+//			
+						 $("#popup_error").modal("show");
+//					
+						 $('#popup_error').on('click','button[name="close_error"]',function(){
+//							
+							 $('#popup_error').modal("toggle");
+						 });
+						$('#popup_error').on('hidden.bs.modal', function() {
 							location.reload();
 						});
-					}
+					},
 				});
 			});
 

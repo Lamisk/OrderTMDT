@@ -22,12 +22,14 @@
 <body>
 	<%@ include file="/jsp/template/navbar.jsp"%>
 	<%@ include file="/jsp/template/modal.jsp"%>
+	<%@ include file="/jsp/template/modal_error.jsp"%>
 	<div class="container rounded  bg-dark  fixed-bottom">
 
 		<div class="input-group mb-3">
 			<span class="input-group-text">#</span> <input type="text"
-				class="form-control" placeholder="Filter by code" aria-label="Code"
-				aria-describedby="basic-addon1" onkeyup="filter()" id="code">
+				class="form-control" placeholder="Filter by name"
+				aria-label="name_search" aria-describedby="basic-addon1"
+				onkeyup="filter()" id="name_search" name="name_search">
 		</div>
 	</div>
 
@@ -42,9 +44,12 @@
 		<table class="table text-wrap table-hover" id="table">
 			<thead class="table-light">
 				<tr>
-					<th scope="col">Code</th>
+					<th scope="col">ID</th>
 					<th scope="col">Name</th>
 					<th scope="col">Address</th>
+					<th scope="col">Phone</th>
+					<th scope="col">Gender</th>
+					<th scope="col">Birthday</th>
 					<th scope="col">Action</th>
 				<tr>
 			</thead>
@@ -53,9 +58,12 @@
 
 					<tr id="${customer.id}">
 
-						<td name="code">${customer.code}</td>
+						<td name="id">${customer.id}</td>
 						<td name="name" class="text-break">${customer.name}</td>
 						<td name="address" class="text-break">${customer.address}</td>
+						<td name="phone" class="text-break">${customer.phone}</td>
+						<td name="gender" class="text-break">${customer.gender}</td>
+						<td name="birthday" class="text-break">${customer.birthday}</td>
 
 						<td>
 							<div class="btn-group" role="group">

@@ -17,17 +17,21 @@
 	src="${pageContext.request.contextPath}/js/filter.js"></script>
 <script type="text/javascript"
 	src="${pageContext.request.contextPath}/js/product/edit.js"></script>
+
+
 <title>${title}</title>
 </head>
 <body>
 	<%@ include file="/jsp/template/navbar.jsp"%>
 	<%@ include file="/jsp/template/modal.jsp"%>
+	<%@ include file="/jsp/template/modal_error.jsp"%>
 	<div class="container rounded  bg-dark  fixed-bottom">
 
 		<div class="input-group mb-3">
-			<span class="input-group-text">#</span> <input type="text"
-				class="form-control" placeholder="Filter by code" aria-label="Code"
-				aria-describedby="basic-addon1" onkeyup="filter()" id="code" autocomplete="off">
+			<span class="input-group-text">@</span> <input type="text"
+				class="form-control" placeholder="Filter by name" aria-label="name_search"
+				aria-describedby="basic-addon1" onkeyup="filter()" id="name_search" name="name_search"
+				autocomplete="off">
 		</div>
 	</div>
 
@@ -42,7 +46,7 @@
 		<table class="table text-wrap table-hover" id="table">
 			<thead class="table-light">
 				<tr>
-					<th scope="col">Code</th>
+					<th scope="col">ID</th>
 					<th scope="col">Name</th>
 					<th scope="col">Price</th>
 					<th scope="col">Description</th>
@@ -54,7 +58,7 @@
 
 					<tr id="${product.id}">
 
-						<td name="code">${product.code}</td>
+						<td name="id">${product.id}</td>
 						<td name="name" class="text-break">${product.name}</td>
 						<td name="price" class="text-break">${product.price}</td>
 						<td name="des" class="text-break">${product.des}</td>

@@ -25,8 +25,9 @@ public class Product {
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Integer id;
 
-	@Column(length = 8, unique = true)
-	private String code;
+//	@Column(length = 8, unique = true)
+//	@Pattern(regexp = "^[a-zA-Z0-9]+$", message = "Code contain special charater or space")
+//	private String code;
 
 	@Pattern(regexp = "^[a-zA-Z0-9 ]+$", message = "Address contain special charater")
 	@NotNull(message = "Not null")
@@ -61,14 +62,6 @@ public class Product {
 		this.id = id;
 	}
 
-	public String getCode() {
-		return code;
-	}
-
-	public void setCode(String code) {
-		this.code = code;
-	}
-
 	public String getName() {
 		return name;
 	}
@@ -93,31 +86,50 @@ public class Product {
 		this.price = price;
 	}
 
-	public Product(Integer id, String code, String name, String des, Long price) {
-		super();
-		this.id = id;
-		this.code = code;
-		this.name = name;
-		this.des = des;
-		this.price = price;
-	}
-
-	public Product(String code, String name, String des, Long price) {
-		super();
-
-		this.code = code;
-		this.name = name;
-		this.des = des;
-		this.price = price;
-	}
-
 	public Product() {
 		super();
 	}
 
-	@Override
-	public String toString() {
-		return "Product [id=" + id + ", code=" + code + ", name=" + name + ", des=" + des + ", price=" + price + "]";
+	public Product(Integer id,
+			@Pattern(regexp = "^[a-zA-Z0-9 ]+$", message = "Address contain special charater") @NotNull(message = "Not null") @Size(min = 2, max = 30, message = "Address 2 to 30 charaters") String name,
+			@NotNull(message = "Name not null") String des,
+			@NotNull(message = "Price ot null") @Min(value = 0, message = "Min price is 0") @Max(value = 100000000, message = "Max price is 100000000") Long price) {
+		super();
+		this.id = id;
+		this.name = name;
+		this.des = des;
+		this.price = price;
 	}
 
+	public Product(
+			@Pattern(regexp = "^[a-zA-Z0-9 ]+$", message = "Address contain special charater") @NotNull(message = "Not null") @Size(min = 2, max = 30, message = "Address 2 to 30 charaters") String name,
+			@NotNull(message = "Name not null") String des,
+			@NotNull(message = "Price ot null") @Min(value = 0, message = "Min price is 0") @Max(value = 100000000, message = "Max price is 100000000") Long price) {
+		super();
+		this.name = name;
+		this.des = des;
+		this.price = price;
+	}
+
+	@Override
+	public String toString() {
+		return "Product [id=" + id + ", name=" + name + ", des=" + des + ", price=" + price + "]";
+	}
+
+	public Product(
+			@Pattern(regexp = "^[a-zA-Z0-9 ]+$", message = "Address contain special charater") @NotNull(message = "Not null") @Size(min = 2, max = 30, message = "Address 2 to 30 charaters") String name,
+			@NotNull(message = "Name not null") String des,
+			@NotNull(message = "Price ot null") @Min(value = 0, message = "Min price is 0") @Max(value = 100000000, message = "Max price is 100000000") Long price,
+			Set<OrderItem> orderItems) {
+		super();
+		this.name = name;
+		this.des = des;
+		this.price = price;
+		this.orderItems = orderItems;
+	}
+
+	
+	
+	
+	
 }

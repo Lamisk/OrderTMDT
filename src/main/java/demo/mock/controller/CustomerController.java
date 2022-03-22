@@ -1,5 +1,7 @@
 package demo.mock.controller;
 
+import java.sql.Date;
+import java.text.SimpleDateFormat;
 import java.util.List;
 
 import javax.servlet.http.HttpServletRequest;
@@ -19,10 +21,9 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 
-import demo.mock.exception.CustomerNotFoundException;
 import demo.mock.model.Customer;
+import demo.mock.model.Gender;
 import demo.mock.service.CustomerService;
-import demo.mock.ultil.Ultil;
 
 @Controller
 @RequestMapping("/customer")
@@ -46,21 +47,21 @@ public class CustomerController {
 		return "customer/list";
 	}
 
-	@GetMapping("/list/{id}")
-	public String detail(Model model, @PathVariable("id") Integer id) throws Exception {
-
-		Customer customer = customerService.get(id);
-		System.out.println(customer);
-		if (customer == null) {
-			throw new CustomerNotFoundException();
-		}
-
-//		model.addAttribute("title", "List customer");
-//		model.addAttribute("customers", customers);
-		model.addAttribute("backto", "customer/list");
-
-		return "customer/detail";
-	}
+//	@GetMapping("/list/{id}")
+//	public String detail(Model model, @PathVariable("id") Integer id) throws Exception {
+//
+//		Customer customer = customerService.get(id);
+//		System.out.println(customer);
+//		if (customer == null) {
+//			throw new CustomerNotFoundException();
+//		}
+//
+////		model.addAttribute("title", "List customer");
+////		model.addAttribute("customers", customers);
+//		model.addAttribute("backto", "customer/list");
+//
+//		return "customer/detail";
+//	}
 
 	@GetMapping("/add")
 	public String showAdd(Model model) throws Exception {
@@ -77,18 +78,27 @@ public class CustomerController {
 		try {
 			String name = (String) request.getParameter("name");
 			String address = (String) request.getParameter("address");
+			String gender = (String) request.getParameter("gender");
+			String phone = (String) request.getParameter("phone");
+			String str_birthday = (String) request.getParameter("birthday");
+			SimpleDateFormat formaDate = new SimpleDateFormat("yyyy-MM-dd");
+			Date birthday = new java.sql.Date(formaDate.parse(str_birthday).getTime());
+//			String code = null;
+//
+//			do {
+//				code = Ultil.getInstance().genCode();
+//
+//			} while (customerService.findExactlyByCode(code) != null);
 
-			String code = null;
-
-			do {
-				code = Ultil.getInstance().genCode();
-
-			} while (customerService.findExactlyByCode(code) != null);
-
+//			System.out.println("gender: " + gender);
+//			System.out.println("GENDER: " + Gender.getGenderByAlias(gender));
 			Customer customer = new Customer();
-			customer.setCode(code);
+//			customer.setCode(code);
 			customer.setAddress(address);
 			customer.setName(name);
+			customer.setGender(Gender.getGenderByAlias(gender));
+			customer.setPhone(phone);
+			customer.setBirthday(birthday);
 			customerService.save(customer);
 			return new ResponseEntity<>("Success add this customer", HttpStatus.OK);
 		} catch (Exception e) {
@@ -123,14 +133,24 @@ public class CustomerController {
 
 	@RequestMapping(value = "/edit", method = RequestMethod.PATCH)
 	public ResponseEntity<String> update(@RequestBody MultiValueMap<String, String> data) throws Exception {
-		String id = data.getFirst("id");
-		String name = data.getFirst("name");
-		String address = data.getFirst("address");
-		Customer customer = customerService.get(Integer.parseInt(id));
 
-		customer.setAddress(address);
-		customer.setName(name);
 		try {
+			String id = data.getFirst("id");
+			String name = data.getFirst("name");
+			String address = data.getFirst("address");
+			String gender = (String) data.getFirst("gender");
+			String phone = (String) data.getFirst("phone");
+			String str_birthday = (String) data.getFirst("birthday");
+			SimpleDateFormat formaDate = new SimpleDateFormat("yyyy-MM-dd");
+			Date birthday = new java.sql.Date(formaDate.parse(str_birthday).getTime());
+
+			Customer customer = customerService.get(Integer.parseInt(id));
+
+			customer.setAddress(address);
+			customer.setName(name);
+			customer.setGender(Gender.getGenderByAlias(gender));
+			customer.setPhone(phone);
+			customer.setBirthday(birthday);
 			customerService.save(customer);
 
 			return new ResponseEntity<>("Successfully updated", HttpStatus.OK);
@@ -142,10 +162,10 @@ public class CustomerController {
 	}
 
 	@PostMapping(value = "/list")
-	public String search(Model model, @RequestParam(value = "code") String code_part) throws Exception {
+	public String search(Model model, @RequestParam(value = "name_search") String name_search) throws Exception {
 
-		if (code_part != null) {
-			List<Customer> customers = customerService.findRelativeByCode(code_part);
+		if (name_search != null) {
+			List<Customer> customers = customerService.findAllByName(name_search);
 
 			model.addAttribute("title", "List customer");
 			model.addAttribute("customers", customers);

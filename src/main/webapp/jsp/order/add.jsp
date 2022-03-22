@@ -17,6 +17,7 @@
 <body>
 	<%@ include file="/jsp/template/navbar.jsp"%>
 	<%@ include file="/jsp/template/modal.jsp"%>
+		<%@ include file="/jsp/template/modal_error.jsp"%>
 	<div class="container rounded mt-5 bg-white p-md-5 form-group">
 
 
@@ -28,12 +29,12 @@
 
 			<input class="form-control" id="customer_filter"
 				name="customer_filter" type="text"
-				placeholder="Filter customer by code"> <select
+				placeholder="Filter customer by name"> <select
 				class="form-select" name="customer_select">
 				<option disabled selected id="default_select" id="default_select">--
 					select an option --</option>
 				<c:forEach items="${customers }" var="customer">
-					<option id=${customer.id } value="${customer.code}">${customer.code}|${customer.name}</option>
+					<option id=${customer.id } value="${customer.id}">${customer.id}|${customer.name}</option>
 				</c:forEach>
 			</select>
 
@@ -44,14 +45,14 @@
 				<label for="product" class="input-group-text">Product</label>
 			</div>
 			<input class="form-control" id="product_filter" name="product_filter"
-				type="text" placeholder="Filter product by code" value="${precode}"> 
+				type="text" placeholder="Filter product by name" value="${prename}"> 
 				
 				<select
 				class="form-select" name="product_select">
 				<option disabled selected id="default_select" id="default_select">--
 					select an option --</option>
 				<c:forEach items="${products }" var="product">
-					<option id=${product.id } value="${product.code}">${product.code}|${product.name}</option>
+					<option id=${product.id } value="${product.id}">${product.id}|${product.name}</option>
 				</c:forEach>
 			</select>
 

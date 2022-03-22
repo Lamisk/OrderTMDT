@@ -19,15 +19,6 @@
 <body>
 	<%@ include file="/jsp/template/navbar.jsp"%>
 
-	<!-- <div class="container rounded  bg-dark  fixed-bottom">
-
-		<div class="input-group mb-3">
-			<span class="input-group-text">#</span> <input type="text"
-				class="form-control" placeholder="Search by code" aria-label="Code"
-				aria-describedby="basic-addon1" onkeyup="search()" id="code">
-		</div>
-	</div> -->
-
 	
 
 	<div class="container rounded mt-5 bg-white p-md-5">
@@ -44,9 +35,9 @@
 			<thead class="table-light">
 				<tr>
 					<th scope="col">id</th>
-					<th scope="col">Customer code</th>
+					
 					<th scope="col">Customer name</th>
-					<th scope="col">Product code</th>
+					
 					<th scope="col">Product name</th>
 				<!-- 	<th scope="col">Name</th> -->
 					<th scope="col">Price (VND)</th>
@@ -58,9 +49,9 @@
 				<c:forEach items="${orderItems}" var="orderItem">
 					<tr>
 						<td>${orderItem.id}</td>
-						<td class="text-break">${orderItem.customer.code}</td>
+						
 						<td class="text-break">${orderItem.customer.name}</td>
-						<td>${orderItem.product.code}</td>
+						
 						<td class="text-break">${orderItem.product.name}</td>
 						<%-- <td class="text-break">${orderItem.product.name}</td> --%>
 						<td class="text-break">${orderItem.product.price}</td>

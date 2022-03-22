@@ -21,14 +21,8 @@
 <body>
 	<%@ include file="/jsp/template/navbar.jsp"%>
 	<%@ include file="/jsp/template/modal.jsp"%>
-	<!-- <div class="container rounded  bg-dark  fixed-bottom">
-
-		<div class="input-group mb-3">
-			<span class="input-group-text">#</span> <input type="text"
-				class="form-control" placeholder="Search by code" aria-label="Code"
-				aria-describedby="basic-addon1" onkeyup="search()" id="code">
-		</div>
-	</div> -->
+	<%@ include file="/jsp/template/modal_error.jsp"%>
+	
 
 	
 
@@ -46,12 +40,12 @@
 		<table class="table text-wrap table-hover" id="table">
 			<thead class="table-light">
 				<tr>
-					<th scope="col">id</th>
-					<th scope="col">Customer code</th>
+					<th scope="col">ID</th>
+					
 					<th scope="col">Customer name</th>
-					<th scope="col">Product code</th>
+					
 					<th scope="col">Product name</th>
-				<!-- 	<th scope="col">Name</th> -->
+				
 					<th scope="col">Price (VND)</th>
 					<th scope="col">Quantity</th>
 					<th scope="col">Total (VND)</th>
@@ -62,9 +56,9 @@
 				<c:forEach items="${orderItems}" var="orderItem">
 					<tr id=${orderItem.id}>
 						<td name="id">${orderItem.id}</td>
-						<td class="text-break" name="c_code">${orderItem.customer.code}</td>
-						<td class="text-break" name="o_name">${orderItem.customer.name}</td>
-						<td name="p_code">${orderItem.product.code}</td>
+					
+						<td class="text-break" name="c_name">${orderItem.customer.name}</td>
+					
 						<td class="text-break" name="p_name">${orderItem.product.name}</td>
 						<%-- <td class="text-break">${orderItem.product.name}</td> --%>
 						<td class="text-break" name="price">${orderItem.product.price}</td>

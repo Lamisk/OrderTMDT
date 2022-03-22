@@ -19,10 +19,8 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 
-import demo.mock.exception.ProductNotFoundException;
 import demo.mock.model.Product;
 import demo.mock.service.ProductService;
-import demo.mock.ultil.Ultil;
 
 @Controller
 @RequestMapping("/product")
@@ -46,21 +44,32 @@ public class ProductController {
 		return "product/list";
 	}
 
-	@GetMapping("/list/{id}")
-	public String detail(Model model, @PathVariable("id") Integer id) throws Exception {
+//	@GetMapping("/list")
+//	@ResponseBody
+//	public List<Product> list(Model model) throws Exception {
+//		List<Product> products = productService.listAll();
+////		model.addAttribute("title", "List product");
+////		model.addAttribute("products", products);
+////		model.addAttribute("backto", "product/list");
+////
+//		return products;
+//	}
 
-		Product product = productService.get(id);
-		System.out.println(product);
-		if (product == null) {
-			throw new ProductNotFoundException();
-		}
-
-//		model.addAttribute("title", "List product");
-//		model.addAttribute("products", products);
-		model.addAttribute("backto", "product/list");
-
-		return "product/detail";
-	}
+//	@GetMapping("/list/{id}")
+//	public String detail(Model model, @PathVariable("id") Integer id) throws Exception {
+//
+//		Product product = productService.get(id);
+//		System.out.println(product);
+//		if (product == null) {
+//			throw new ProductNotFoundException();
+//		}
+//
+////		model.addAttribute("title", "List product");
+////		model.addAttribute("products", products);
+//		model.addAttribute("backto", "product/list");
+//
+//		return "product/detail";
+//	}
 
 	@GetMapping("/add")
 	public String showAdd(Model model) throws Exception {
@@ -77,15 +86,37 @@ public class ProductController {
 			String name = (String) request.getParameter("name");
 			String des = (String) request.getParameter("des");
 			Long price = Long.parseLong(request.getParameter("price"));
-			String code = null;
+//			String code = (String) request.getParameter("code");
+//			System.out.println("CODE get: " + code);
+//			if (code == "") {
+//				code = null;
+//			}
+//			if (code != null) {
+//				code = code.trim();
+//				if (code == "") {
+//					code = null;
+//				}
+//			}
+//			if (code!=null)
+//			{
+//				if (productService.findExactlyByCode(code) != null) {
+//					return new ResponseEntity<>("Duplicate code", HttpStatus.NOT_ACCEPTABLE);
+//
+//				}
+//			}
+//			System.out.println("CODE trim: " + code);
+//			while (code == null) {
+//				code = Ultil.getInstance().genCode();
+//				if (productService.findExactlyByCode(code) != null) {
+//					code = null;
+//				}
+//
+//			}
 
-			do {
-				code = Ultil.getInstance().genCode();
-
-			} while (productService.findExactlyByCode(code) != null);
-
+//			System.out.println("CODE gen : " + code);
+//			System.out.println("CODE set: " + code);
 			Product product = new Product();
-			product.setCode(code);
+
 			product.setDes(des);
 			product.setName(name);
 			product.setPrice(price);
@@ -123,11 +154,12 @@ public class ProductController {
 
 	@RequestMapping(value = "/edit", method = RequestMethod.PATCH)
 	public ResponseEntity<String> update(@RequestBody MultiValueMap<String, String> data) throws Exception {
-		
+
 		try {
 			String id = data.getFirst("id");
 			String name = data.getFirst("name");
 			String des = data.getFirst("des");
+//			String code = data.getFirst("code");
 //			System.out.println(data.getFirst("price"));
 			Long price = Long.parseLong(data.getFirst("price"));
 			Product product = productService.get(Integer.parseInt(id));
@@ -135,6 +167,7 @@ public class ProductController {
 			product.setDes(des);
 			product.setName(name);
 			product.setPrice(price);
+//			product.setCode(code);
 			productService.save(product);
 
 			return new ResponseEntity<>("Successfully updated", HttpStatus.OK);
@@ -146,10 +179,10 @@ public class ProductController {
 	}
 
 	@PostMapping(value = "/list")
-	public String search(Model model, @RequestParam(value = "code") String code_part) throws Exception {
+	public String search(Model model, @RequestParam(value = "name_search") String name_search) throws Exception {
 
-		if (code_part != null) {
-			List<Product> products = productService.findRelativeByCode(code_part);
+		if (name_search != null) {
+			List<Product> products = productService.findAllByName(name_search);
 
 			model.addAttribute("title", "List product");
 			model.addAttribute("products", products);

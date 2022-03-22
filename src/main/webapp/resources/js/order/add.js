@@ -54,8 +54,36 @@ $(function() {
 			'click',
 			function() {
 				
-				 $("#popup .modal-title").html("Confirm");
-				 $("#popup .modal-body").html("You will add this customer");
+				p_name = $("select[name='product_select']").find("option:selected").text().split("|")[1];
+				c_name = $("select[name='customer_select']").find("option:selected").text().split("|")[1];
+				
+//				total = currentRow.find("td[name='total']").text();
+				quantity = $("input[name='quantity']").val();
+				
+				$("#popup .modal-title").html("Confirm");
+				$("#popup .modal-body").html(`Will you add this order?<br\>
+						<div class="table-responsive">
+						 <table class='table table-bordered' >
+						 <tbody>
+								
+								  <tr>
+									 <th scope="row">Customer name</th>
+									 <td>${c_name}</td>
+								 </tr>
+								  <tr>
+									 <th scope="row">Product name</th>
+									 <td class="text-break">${p_name}</td>
+								 </tr>
+								 
+								  <tr>
+									 <th scope="row">Quantity</th>
+									 <td>${quantity}</td>
+								 </tr>
+								 		
+								 </tbody>
+						 </table>
+						 </div>
+						`);
 				 $("#popup").modal("show");
 				 $('#popup').on('click', 'button[name="save"]', function() {
 						let url = $(location).attr('origin')+"/"+$(location).attr('pathname').split("/")[1]+"/order/add";
@@ -73,19 +101,31 @@ $(function() {
 //								location.reload();
 								window.location.href =url;
 							},
-							fail : function(reponse) {
-								$("#popup .modal-title").html("Alert");
-								$("#popup .modal-body").html(xhr.responseText);
-								$("button[name='save']").hide();
-								$('#popup').on('hidden.bs.modal', function() {
+							fail : function(xhr, status, error) {
+								$("#popup_error .modal-title").html("Alert");
+								$("#popup_error .modal-body").html(xhr.responseText);
+//					
+								 $("#popup_error").modal("show");
+//							
+								 $('#popup_error').on('click','button[name="close_error"]',function(){
+//									
+									 $('#popup_error').modal("toggle");
+								 });
+								$('#popup_error').on('hidden.bs.modal', function() {
 									location.reload();
 								});
 							},
 							error : function(xhr, status, error) {
-								$("#popup .modal-title").html("Alert");
-								$("#popup .modal-body").html(xhr.responseText);
-								$("button[name='save']").hide();
-								$('#popup').on('hidden.bs.modal', function() {
+								$("#popup_error .modal-title").html("Alert");
+								$("#popup_error .modal-body").html(xhr.responseText);
+//					
+								 $("#popup_error").modal("show");
+//							
+								 $('#popup_error').on('click','button[name="close_error"]',function(){
+//									
+									 $('#popup_error').modal("toggle");
+								 });
+								$('#popup_error').on('hidden.bs.modal', function() {
 									location.reload();
 								});
 							},

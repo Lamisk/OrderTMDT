@@ -14,8 +14,8 @@ public interface RepositoryInter<R, T> extends JpaRepository<R, T> {
 
 	public List<R> findAllByName(String name);
 
-	public List<R> findAllByCode(String code);
-	public R findByCode(String code);
+//	public List<R> findAllByCode(String code);
+//	public R findByCode(String code);
 	
-	public List<R> findByCodeContains(String code_part);
+	public List<R> findByNameContains(String name);
 }

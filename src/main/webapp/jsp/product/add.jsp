@@ -16,17 +16,18 @@
 <body>
 	<%@ include file="/jsp/template/navbar.jsp"%>
 	<%@ include file="/jsp/template/modal.jsp"%>
+	<%@ include file="/jsp/template/modal_error.jsp"%>
 
 
 	<div class="container rounded mt-5 bg-white p-md-5">
-		<%-- <form action="${contextPath}/product/add" method="post" name="form"
-			id="form"> --%>
 		<form>
+			
+			
 			<div class="mb-3 mt-3">
 				<label for="name" class="form-label">Name:</label> <input
 					type="text" class="form-control" id="name"
 					placeholder="Enter product's name" name="name" autocomplete="off"
-					autofocus>
+					autofocus maxlength=30>
 				<p class="text-danger" id="error_name"></p>
 			</div>
 			<div class="mb-3">

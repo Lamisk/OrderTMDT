@@ -13,10 +13,17 @@ public interface ServiceInter<T> {
 
 	public void save(T obj);
 
-	public List<T> findAllByCode(String code);
+//	public List<T> findAllByCode(String code);
+//
+//	public T findExactlyByCode(String code);
 
-	public T findExactlyByCode(String code);
+//	public List<T> findRelativeByCode(String code_part);
+	
+	public List<T> findAllByName(String name);
+//
+//	public T findExactlyByCode(String code);
 
-	public List<T> findRelativeByCode(String code_part);
+//	public List<T> findRelativeByCode(String code_part);
 
+	
 }

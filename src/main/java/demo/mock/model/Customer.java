@@ -1,11 +1,14 @@
 package demo.mock.model;
 
+import java.sql.Date;
 import java.util.HashSet;
 import java.util.Set;
 
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.EnumType;
+import javax.persistence.Enumerated;
 import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
@@ -16,6 +19,8 @@ import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Pattern;
 import javax.validation.constraints.Size;
 
+import org.hibernate.validator.constraints.Length;
+
 @Entity
 @Table
 //https://stackoverflow.com/questions/2385701/regular-expression-for-first-and-last-name
@@ -24,12 +29,16 @@ import javax.validation.constraints.Size;
 ///^[a-zA-Z]+(?:\s[a-zA-Z]+)+$/
 
 public class Customer {
+	
+	
+
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Integer id;
 
-	@Column(length = 8, unique = true)
-	private String code;
+//	@Column(length = 8, unique = true)
+//	private String code;
+
 	@Pattern(regexp = "^[a-zA-Z]+(?:\\s[a-zA-Z]+)+$", message = "Name contain special charater")
 	@NotNull(message = "Not null")
 	@Size(min = 2, max = 30, message = "Name 2 to 30 charaters")
@@ -39,6 +48,16 @@ public class Customer {
 	@Size(min = 2, max = 100, message = "Address 2 to 100 charaters")
 	@Pattern(regexp = "^[a-zA-Z]+(?:\\s[a-zA-Z0-9,]+)+$", message = "Address contain special charaters")
 	private String address;
+
+	@Column(length = 10, unique = true)
+	@Pattern(regexp = "^[0-9]+$", message = "Phone contain non-numeric")
+	 @Length(min = 10, max = 10,message = "Length of phone must be 10")
+	private String phone;
+
+	@Enumerated(EnumType.STRING)
+	private Gender gender;
+
+	private Date birthday;
 
 	@OneToMany(mappedBy = "customer", fetch = FetchType.EAGER, cascade = CascadeType.REMOVE)
 //	@OnDelete(action = OnDeleteAction.CASCADE)
@@ -52,12 +71,28 @@ public class Customer {
 		this.id = id;
 	}
 
-	public String getCode() {
-		return code;
+	public String getPhone() {
+		return phone;
 	}
 
-	public void setCode(String code) {
-		this.code = code;
+	public void setPhone(String phone) {
+		this.phone = phone;
+	}
+
+	public Gender getGender() {
+		return gender;
+	}
+
+	public void setGender(Gender gender) {
+		this.gender = gender;
+	}
+
+	public Date getBirthday() {
+		return birthday;
+	}
+
+	public void setBirthday(Date birthday) {
+		this.birthday = birthday;
 	}
 
 	public String getName() {
@@ -76,29 +111,61 @@ public class Customer {
 		this.address = address;
 	}
 
-	public Customer(Integer id, String code, String name, String address) {
-		super();
-		this.id = id;
-		this.code = code;
-		this.name = name;
-		this.address = address;
+	public Set<OrderItem> getOrderItems() {
+		return orderItems;
 	}
 
-	public Customer(String code, String name, String address) {
-		super();
-
-		this.code = code;
-		this.name = name;
-		this.address = address;
+	public void setOrderItems(Set<OrderItem> orderItems) {
+		this.orderItems = orderItems;
 	}
 
 	public Customer() {
 		super();
 	}
 
+	public Customer(Integer id,
+			@Pattern(regexp = "^[a-zA-Z]+(?:\\s[a-zA-Z]+)+$", message = "Name contain special charater") @NotNull(message = "Not null") @Size(min = 2, max = 30, message = "Name 2 to 30 charaters") String name,
+			@NotNull(message = "Not null") @Size(min = 2, max = 100, message = "Address 2 to 100 charaters") @Pattern(regexp = "^[a-zA-Z]+(?:\\s[a-zA-Z0-9,]+)+$", message = "Address contain special charaters") String address,
+			String phone, Gender gender, Date birthday) {
+		super();
+		this.id = id;
+		this.name = name;
+		this.address = address;
+		this.phone = phone;
+		this.gender = gender;
+		this.birthday = birthday;
+	}
+
+	public Customer(
+			@Pattern(regexp = "^[a-zA-Z]+(?:\\s[a-zA-Z]+)+$", message = "Name contain special charater") @NotNull(message = "Not null") @Size(min = 2, max = 30, message = "Name 2 to 30 charaters") String name,
+			@NotNull(message = "Not null") @Size(min = 2, max = 100, message = "Address 2 to 100 charaters") @Pattern(regexp = "^[a-zA-Z]+(?:\\s[a-zA-Z0-9,]+)+$", message = "Address contain special charaters") String address,
+			String phone, Gender gender, Date birthday) {
+		super();
+		this.name = name;
+		this.address = address;
+		this.phone = phone;
+		this.gender = gender;
+		this.birthday = birthday;
+	}
+
 	@Override
 	public String toString() {
-		return "Customer [id=" + id + ", code=" + code + ", name=" + name + ", address=" + address + "]";
+		return "Customer [id=" + id + ", name=" + name + ", address=" + address + ", phone=" + phone + ", gender="
+				+ gender + ", birthday=" + birthday + "]";
+	}
+
+	public Customer(
+			@Pattern(regexp = "^[a-zA-Z]+(?:\\s[a-zA-Z]+)+$", message = "Name contain special charater") @NotNull(message = "Not null") @Size(min = 2, max = 30, message = "Name 2 to 30 charaters") String name,
+			@NotNull(message = "Not null") @Size(min = 2, max = 100, message = "Address 2 to 100 charaters") @Pattern(regexp = "^[a-zA-Z]+(?:\\s[a-zA-Z0-9,]+)+$", message = "Address contain special charaters") String address,
+			@Pattern(regexp = "^[0-9]+$", message = "Phone contain non-numeric") String phone, Gender gender,
+			Date birthday, Set<OrderItem> orderItems) {
+		super();
+		this.name = name;
+		this.address = address;
+		this.phone = phone;
+		this.gender = gender;
+		this.birthday = birthday;
+		this.orderItems = orderItems;
 	}
 
 }

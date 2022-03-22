@@ -1,13 +1,12 @@
-
 $(function() {
-	$("button[name='search']").on('click',function(){
-		let code = $("input[name='code']").val();
+	$("button[name='search']").on('click', function() {
+		let code = $("input[name='name_search']").val();
 		let url = $(location).attr('href');
-
-		 $('#searchform').submit(function() {
-			    $(this).attr('action',url); 
-			    return true;
-			  });
+		
+		$('#searchform').submit(function() {
+			$(this).attr('action', url);
+			return true;
+		});
 	});
 	// Declare variables
 	// var input, filter, table, tr, td, i, txtValue;
