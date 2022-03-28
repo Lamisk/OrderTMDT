@@ -2,7 +2,6 @@ package demo.mock.controller;
 
 import java.util.List;
 
-import javax.persistence.EntityManager;
 import javax.servlet.http.HttpServletRequest;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -22,12 +21,15 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import demo.mock.model.Customer;
 import demo.mock.model.OrderItem;
 import demo.mock.model.Product;
+import demo.mock.model.Status;
 import demo.mock.service.CustomerService;
 import demo.mock.service.OrderService;
 import demo.mock.service.ProductService;
+import demo.mock.service.StatusService;
 
 @Controller
 @RequestMapping("/order")
+
 public class OrderController {
 	@Autowired
 	private OrderService orderSerive;
@@ -35,6 +37,9 @@ public class OrderController {
 	private ProductService productService;
 	@Autowired
 	private CustomerService customerService;
+
+	@Autowired
+	private StatusService statusService;
 
 	@GetMapping(value = { "/add/{p_id}", "/add" })
 	public String add_get(Model model, HttpServletRequest request,
@@ -73,12 +78,18 @@ public class OrderController {
 //			System.out.println(product_id+" "+customer_id+" "+quantity);
 			Product product = productService.get(product_id);
 			Customer customer = customerService.get(customer_id);
+			Status status = statusService.findByName("pending");
+			if (status == null) {
+				status = new Status("pending");
+				statusService.save(status);
+			}
 
 			OrderItem orderItem = new OrderItem();
 			orderItem.setCustomer(customer);
 			orderItem.setProduct(product);
 			orderItem.setQuantity(quantity);
-			orderItem.setTotal(quantity * product.getPrice());
+//			orderItem.setTotal(quantity * product.getPrice());
+			orderItem.setStatus(status);
 			orderSerive.save(orderItem);
 			model.addAttribute("backto", "order/list");
 			return new ResponseEntity<>("Successfully add order", HttpStatus.OK);
@@ -95,6 +106,10 @@ public class OrderController {
 		model.addAttribute("backto", "order/list");
 		model.addAttribute("title", "List order");
 		model.addAttribute("orderItems", orderItems);
+	
+
+		
+		
 		return "order/list";
 	}
 
@@ -122,20 +137,49 @@ public class OrderController {
 	public ResponseEntity<String> update(@RequestBody MultiValueMap<String, String> data) throws Exception {
 
 		try {
-		
+
 			String id = data.getFirst("id");
 			int o_id = Integer.parseInt(id);
 			int quantity = Integer.parseInt(data.getFirst("quantity"));
+			int status_id = Integer.parseInt(data.getFirst("status_id"));
+			
+//			int q  = orderSerive.get(o_id).getQuantity();
+//			System.out.println(q);
+			OrderItem o = orderSerive.get(o_id);
+			o.setQuantity(quantity);
+			o.getStatus().setId(status_id);
+			orderSerive.save(o);
+//			Status s = new Status();
+//			s.setId(status_id);
+//			o.setStatus(s);
+//			orderSerive.save(o);
+//			List<OrderItem> orders = orderSerive.listAll();
+//			for (OrderItem o: orders) {
+//				System.out.println(o.getId());
+//				System.out.println(o.getQuantity());
+//				System.out.println(o.getCustomer().getName());
+//				System.out.println(o.getProduct().getName());
+//				System.out.println(o.getStatus().getName());
+//				System.out.println();
+//			}
+		
+//			OrderItem orderItem = orderSerive.selectByID(o_id);
+//			System.out.println("INFO:" + orderItem.getQuantity());
+//			
+//			Long total = orderItem.getTotal() /  orderItem.getQuantity() * quantity;
+//			
+//			orderSerive.updateQuantityAndStatusById(quantity, o_id, status_id);
+//			
 //			System.out.println(id + " " + quantity);
-			OrderItem orderItem = orderSerive.get(o_id);
-			System.out.println("Order id: "+o_id);
-			System.out.println("Quantity: "+orderItem.getQuantity());
-			orderItem.setQuantity(quantity);
-			orderSerive.save(orderItem);
+//			OrderItem orderItem = orderSerive.get(o_id);
+//			System.out.println("Order id: "+o_id);
+//			System.out.println("Quantity: "+orderItem.getQuantity());
+//			orderItem.setQuantity(quantity);
+//			orderSerive.save(orderItem);
 
 			return new ResponseEntity<>("Successfully updated", HttpStatus.OK);
 		} catch (Exception e) {
-			System.out.println(e);
+			
 			e.printStackTrace();
 
 			return new ResponseEntity<>("Failed updated", HttpStatus.NOT_ACCEPTABLE);

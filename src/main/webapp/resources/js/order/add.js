@@ -183,19 +183,27 @@ $(function() {
 
 	}
 	
-	$("input[name='quantity']").on('keyup blur', function() {
+	$("input[name='quantity']").on('keyup blur change', function() {
 
 		let ret = checkQuantity($("input[name='quantity']"), "quantity");
 		check_quantity = ret ? false : true;
 		checkSubmit();
+		
 		if (ret) {
 			$("#error_quantity").html(ret);
 
 		} else {
+		
+			$("#total").val($("#price").val() * $(this).val());
 			$("#error_quantity").html("");
 		}
 	});
 	
-	
+	$("select[name='product_select']").on('mouseup',function(){
+		txt = $(this).find("option:selected").attr("value");
+		$("#price").val(txt);
+		$("#total").val($("#price").val() * $("input[name='quantity']").val());
+		
+	})
 	
 });

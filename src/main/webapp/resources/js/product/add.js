@@ -69,7 +69,7 @@ $(function() {
 	
 	
 	checkSubmitButton = function() {
-		console.log(check_name,check_des, check_price);
+//		console.log(check_name,check_des, check_price);
 		if (check_name && check_des && check_price ) {
 			$('button[name="submit"]').removeClass("disabled");
 		} else {

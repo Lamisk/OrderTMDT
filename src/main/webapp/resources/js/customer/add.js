@@ -23,7 +23,7 @@ $(function() {
 	{
 		ret = "";
 		txt = input_obj.val();
-		pattern_str=/^[0-9]+$/;
+		pattern_str=/^[0]{1}[0-9]+$/;
 		if (txt.length<10)
 			{
 			ret = ret.concat(`Length of ${name_obj} must equal 10.<br>`);
@@ -35,8 +35,8 @@ $(function() {
 	
 // /^[a-zA-Z]+(?:\s[a-zA-Z]+)+$/
 // /^[a-zA-Z]+(?:\s[a-zA-Z0-9,]+)+$/
-	let pattern = new RegExp(/^[a-zA-Z]+(?:\s[a-zA-Z]+)+$/);
-	let pattern_addr = new RegExp(/^[a-zA-Z]+(?:\s[a-zA-Z0-9,]+)+$/);
+	let pattern = new RegExp(/^[a-zA-ZàáãạảăắằẳẵặâấầẩẫậèéẹẻẽêềếểễệđìíĩỉịòóõọỏôốồổỗộơớờởỡợùúũụủưứừửữựỳỵỷỹýÀÁÃẠẢĂẮẰẲẴẶÂẤẦẨẪẬÈÉẸẺẼÊỀẾỂỄỆĐÌÍĨỈỊÒÓÕỌỎÔỐỒỔỖỘƠỚỜỞỠỢÙÚŨỤỦƯỨỪỬỮỰỲỴỶỸÝ]+(?:\s[a-zA-ZàáãạảăắằẳẵặâấầẩẫậèéẹẻẽêềếểễệđìíĩỉịòóõọỏôốồổỗộơớờởỡợùúũụủưứừửữựỳỵỷỹýÀÁÃẠẢĂẮẰẲẴẶÂẤẦẨẪẬÈÉẸẺẼÊỀẾỂỄỆĐÌÍĨỈỊÒÓÕỌỎÔỐỒỔỖỘƠỚỜỞỠỢÙÚŨỤỦƯỨỪỬỮỰỲỴỶỸÝ]+)+$/);
+	let pattern_addr = new RegExp(/^[a-zA-ZàáãạảăắằẳẵặâấầẩẫậèéẹẻẽêềếểễệđìíĩỉịòóõọỏôốồổỗộơớờởỡợùúũụủưứừửữựỳỵỷỹýÀÁÃẠẢĂẮẰẲẴẶÂẤẦẨẪẬÈÉẸẺẼÊỀẾỂỄỆĐÌÍĨỈỊÒÓÕỌỎÔỐỒỔỖỘƠỚỜỞỠỢÙÚŨỤỦƯỨỪỬỮỰỲỴỶỸÝ]+(?:\s[a-zA-Z0-9,àáãạảăắằẳẵặâấầẩẫậèéẹẻẽêềếểễệđìíĩỉịòóõọỏôốồổỗộơớờởỡợùúũụủưứừửữựỳỵỷỹýÀÁÃẠẢĂẮẰẲẴẶÂẤẦẨẪẬÈÉẸẺẼÊỀẾỂỄỆĐÌÍĨỈỊÒÓÕỌỎÔỐỒỔỖỘƠỚỜỞỠỢÙÚŨỤỦƯỨỪỬỮỰỲỴỶỸÝ]+)+$/);
 	
 	checkPattern = function(input_obj, name_obj, pattern_str) {
 		let ret = "";
@@ -115,7 +115,8 @@ $(function() {
 	$("input[name='phone']").on('keyup blur keydown', function(e) {
 
 		   charCode = (e.which) ? e.which : e.keyCode;
-	        if (!((charCode >= 48 && charCode <= 57) || (charCode >= 96 && charCode <= 105) || (charCode==8))) {
+//		   console.log(charCode);
+	        if (!((48<= charCode && charCode <= 57) || (charCode >= 96 && charCode <= 105) || (charCode==8)) || charCode==229) {
 	        	  e.preventDefault();
 	        }
 

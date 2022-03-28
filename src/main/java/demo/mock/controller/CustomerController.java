@@ -165,6 +165,7 @@ public class CustomerController {
 	public String search(Model model, @RequestParam(value = "name_search") String name_search) throws Exception {
 
 		if (name_search != null) {
+			System.out.println(name_search);
 			List<Customer> customers = customerService.findAllByName(name_search);
 
 			model.addAttribute("title", "List customer");

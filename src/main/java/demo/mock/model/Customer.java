@@ -37,18 +37,20 @@ public class Customer {
 //	@Column(length = 8, unique = true)
 //	private String code;
 
-	@Pattern(regexp = "^[a-zA-Z]+(?:\\s[a-zA-Z]+)+$", message = "Name contain special charater")
+	@Pattern(regexp = "^[a-zA-ZàáãạảăắằẳẵặâấầẩẫậèéẹẻẽêềếểễệđìíĩỉịòóõọỏôốồổỗộơớờởỡợùúũụủưứừửữựỳỵỷỹýÀÁÃẠẢĂẮẰẲẴẶÂẤẦẨẪẬÈÉẸẺẼÊỀẾỂỄỆĐÌÍĨỈỊÒÓÕỌỎÔỐỒỔỖỘƠỚỜỞỠỢÙÚŨỤỦƯỨỪỬỮỰỲỴỶỸÝ]+(?:\\s[a-zA-ZàáãạảăắằẳẵặâấầẩẫậèéẹẻẽêềếểễệđìíĩỉịòóõọỏôốồổỗộơớờởỡợùúũụủưứừửữựỳỵỷỹýÀÁÃẠẢĂẮẰẲẴẶÂẤẦẨẪẬÈÉẸẺẼÊỀẾỂỄỆĐÌÍĨỈỊÒÓÕỌỎÔỐỒỔỖỘƠỚỜỞỠỢÙÚŨỤỦƯỨỪỬỮỰỲỴỶỸÝ]+)+$", message = "Name contain special charater")
 	@NotNull(message = "Not null")
 	@Size(min = 2, max = 30, message = "Name 2 to 30 charaters")
 	private String name;
+	
+	
 	@NotNull(message = "Not null")
 	@Column(length = 100)
 	@Size(min = 2, max = 100, message = "Address 2 to 100 charaters")
-	@Pattern(regexp = "^[a-zA-Z]+(?:\\s[a-zA-Z0-9,]+)+$", message = "Address contain special charaters")
+	@Pattern(regexp = "^[a-zA-ZàáãạảăắằẳẵặâấầẩẫậèéẹẻẽêềếểễệđìíĩỉịòóõọỏôốồổỗộơớờởỡợùúũụủưứừửữựỳỵỷỹýÀÁÃẠẢĂẮẰẲẴẶÂẤẦẨẪẬÈÉẸẺẼÊỀẾỂỄỆĐÌÍĨỈỊÒÓÕỌỎÔỐỒỔỖỘƠỚỜỞỠỢÙÚŨỤỦƯỨỪỬỮỰỲỴỶỸÝ]+(?:\\s[a-zA-Z0-9,àáãạảăắằẳẵặâấầẩẫậèéẹẻẽêềếểễệđìíĩỉịòóõọỏôốồổỗộơớờởỡợùúũụủưứừửữựỳỵỷỹýÀÁÃẠẢĂẮẰẲẴẶÂẤẦẨẪẬÈÉẸẺẼÊỀẾỂỄỆĐÌÍĨỈỊÒÓÕỌỎÔỐỒỔỖỘƠỚỜỞỠỢÙÚŨỤỦƯỨỪỬỮỰỲỴỶỸÝ]+)+$", message = "Address contain special charaters")
 	private String address;
 
 	@Column(length = 10, unique = true)
-	@Pattern(regexp = "^[0-9]+$", message = "Phone contain non-numeric")
+	@Pattern(regexp = "^[0]{1}[0-9]+$", message = "Phone contain non-numeric")
 	@Length(min = 10, max = 10, message = "Length of phone must be 10")
 	private String phone;
 

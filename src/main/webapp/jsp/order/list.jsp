@@ -43,6 +43,7 @@
 					<th scope="col">Price (VND)</th>
 					<th scope="col">Quantity</th>
 					<th scope="col">Total (VND)</th>
+					<th scope="col">Status</th>
 				<tr>
 			</thead>
 			<tbody class="table-light">
@@ -58,7 +59,8 @@
 
 						<td>${orderItem.quantity}</td>
 
-						<td class="text-break">${orderItem.total}</td>
+						<td class="text-break">${orderItem.total()}</td>
+						<td class="text-break">${orderItem.status.name}</td>
 					</tr>
 
 				</c:forEach>

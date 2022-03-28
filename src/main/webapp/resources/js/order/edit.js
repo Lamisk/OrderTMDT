@@ -1,5 +1,24 @@
 //ORDER
 $(function() {
+	 var html_status = `<select id="select_status" name="select_status" >`;
+	function get_status() {
+		   base_url = window.location.pathname.substring(0, window.location.pathname.indexOf("/",2));
+		   $.ajax(
+					{
+						 type: "get",
+					     url: base_url+"/status/list",
+					     success: function(response){
+					         data = JSON.parse(response);	        
+					         for (id in data){ 
+					        	txt = `<option id=${id} value=${data[id]}>${data[id]}</option>`
+					        		 html_status = html_status.concat(txt);
+					         }	         
+					         html_status = html_status.concat("<\select>");
+// console.log(html_status);
+					     }
+					});
+		}
+	get_status();
 
 	$('tbody')
 			.on(
@@ -14,20 +33,38 @@ $(function() {
 						 price = currentRow.find("td[name='price']");
 						 quantity = currentRow.find("td[name='quantity']");
 						 total = currentRow.find("td[name='total']");
+						 o_status = currentRow.find("td[name='status']");
 
 						// SAVE OLD
 						 old_quantity = quantity.text();
 						 old_total = total.text();
+						 old_status = o_status.text();
+//						 console.log("old_status",old_status);
 
 // CHANGE TYPE
 						quantity
 								.html("<input name='edit_quantity' type='number' min=0 max=100 value='"
 										+ old_quantity + "'>");
+						o_status.html(html_status);
+						
+						currentRow.find("select[name='select_status']").find("option").each(function(){
+//							console.log($(this).text());
+							 currentRow = $(this).closest("tr");
+							
+//							console.log("old",old_status)
+							if (($(this)).attr("value")==old_status){
+								$(this).attr('selected', 'selected');
+//								console.log($(this).text(), 'selected');
+							}
+					
+						});
 
+// ADD BUTTON
 						currentRow
 								.find('.btn-group')
 								.prepend(
 										"<button type='button' class='btn btn-outline-secondary' name='cancel'>Cancel</button>");
+
 						currentRow
 								.find('.btn-group')
 								.prepend(
@@ -40,6 +77,9 @@ $(function() {
 						currentRow
 								.append("<input type='hidden' name='hidden_old_total' value='"
 										+ old_total + "'>");
+						currentRow
+						.append("<input type='hidden' name='hidden_old_status' value='"
+								+ old_status + "'>");
 						
 						$(this).hide()
 						// FOR EDIT PRICE
@@ -81,13 +121,15 @@ $(function() {
 		price = currentRow.find("td[name='price']").text();
 		total = currentRow.find("td[name='total']").text();
 		quantity = currentRow.find("input[name='edit_quantity']").val();
-		
+		status_id = currentRow.find("select[name='select_status']").find("option:selected").attr("id");
+		status_name = currentRow.find("select[name='select_status']").find("option:selected").attr("value");
 	 
 	
 		
 		 data = {
 			id : id,
-			quantity : quantity
+			quantity : quantity,
+			status_id: status_id
 		};
 		$("#popup .modal-title").html("Confirm");
 		$("#popup .modal-body").html(`Will you update this order?<br\>
@@ -114,6 +156,10 @@ $(function() {
 						 						  <tr>
 							 <th scope="row">Total</th>
 							 <td>${total}</td>
+						 </tr>
+						 					  <tr>
+							 <th scope="row">Status</th>
+							 <td>${status_name}</td>
 						 </tr>
 						 </tbody>
 				 </table>
@@ -231,6 +277,7 @@ $(function() {
 // REMOVE HIDDEN
 											currentRow.find("input[name='hidden_old_total']").remove();
 											currentRow.find("input[name='hidden_old_quantity']").remove();
+											currentRow.find("input[name='hidden_old_status']").remove();
 											
 // SHOW/HIDE/REMOVE BUTTON
 											currentRow.find(

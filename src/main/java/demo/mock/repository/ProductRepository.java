@@ -13,5 +13,5 @@ import demo.mock.model.Product;
 
 @Repository
 public interface ProductRepository extends RepositoryInter<Product, Integer> {
-	
+
 }

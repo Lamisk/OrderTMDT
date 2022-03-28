@@ -15,7 +15,9 @@ public class OrderService {
 
 
 	public OrderItem get(int id) {
-		return repo.getById(id);
+//		return repo.getById(id);
+		return repo.findById(id).get();
+		
 	}
 	
 	public void save(OrderItem obj) {
@@ -28,6 +30,14 @@ public class OrderService {
 
 	public void deleteById(Integer id) {
 		repo.deleteById(id);
+	}
+	
+	public void updateQuantityAndStatusById(Integer quantity, Integer o_id, Integer s_id) {
+		repo.updateQuantityAndStatusById(quantity, o_id,s_id);
+	}
+	
+	public OrderItem selectByID(Integer id) {
+		return repo.selectByID(id);
 	}
 //	public List<Product> listAllProduct(){
 //		return repo.findAllProduct();

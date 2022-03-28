@@ -6,10 +6,13 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
-import javax.persistence.ManyToOne;
+import javax.persistence.OneToOne;
 import javax.persistence.Table;
+import javax.persistence.Transient;
 import javax.validation.constraints.Max;
 import javax.validation.constraints.Min;
+
+
 
 @Entity
 @Table
@@ -18,35 +21,36 @@ public class OrderItem {
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Integer id;
 
-//	1 cart co the chua nhieu product
-//	1 product chi thuoc ve 1 cart
-
-	
-//	Dat lai ten khoa khoa, 
-//	mac dinh hibernate se gen ten khoa ngoai 
-//	dua tren ten thuoc tinh
-	@ManyToOne(fetch = FetchType.EAGER)
-	@JoinColumn(name = "product_id", nullable = false)
-	private Product product;
-
-//	1 customer  co the co nhieu item duoc oerder
-	@ManyToOne(fetch = FetchType.EAGER)
-	@JoinColumn(name = "customer_id", nullable = false)
-	private Customer customer;
-
 	@Min(value = 0, message = "Min quantity is 0")
 	@Max(value = 100, message = "Max quantity is 100 ")
 	private int quantity;
 
-	private Long total;
+//	@Column(name = "total")
+//	private Long total;
 
-	public Long getTotal() {
-		return total;
-	}
+	@OneToOne(fetch = FetchType.EAGER)
+	@JoinColumn(name = "product_id", nullable = false)
+	private Product product;
 
-	public void setTotal(Long total) {
-		this.total = total;
+	@OneToOne(fetch = FetchType.EAGER)
+	@JoinColumn(name = "customer_id", nullable = false)
+	private Customer customer;
+
+	@OneToOne(fetch = FetchType.EAGER)
+	@JoinColumn(name = "status_id", nullable = false)
+	private Status status;
+
+	@Transient
+	public Long total() {
+		return this.product.getPrice() * quantity;
 	}
+//	public Long getTotal() {
+//		return total;
+//	}
+
+//	public void setTotal(Long total) {
+//		this.total = total;
+//	}
 
 	public Integer getId() {
 		return id;
@@ -80,13 +84,19 @@ public class OrderItem {
 		this.quantity = quantity;
 	}
 
-	
+	public Status getStatus() {
+		return status;
+	}
+
+	public void setStatus(Status status) {
+		this.status = status;
+	}
 
 	public OrderItem(Integer id, Product product, Long total) {
 		super();
 		this.id = id;
 		this.product = product;
-		this.total = total;
+//		this.total = total;
 	}
 
 	public OrderItem(
@@ -94,7 +104,7 @@ public class OrderItem {
 			Long total) {
 		super();
 		this.quantity = quantity;
-		this.total = total;
+//		this.total = total;
 	}
 
 	public OrderItem() {
@@ -103,9 +113,8 @@ public class OrderItem {
 
 	@Override
 	public String toString() {
-		return "OrderItem [id=" + id + ", quantity=" + quantity + ", total=" + total + "]";
+//		return "OrderItem [id=" + id + ", quantity=" + quantity + ", total=" + total + "]";
+		return "OrderItem [id=" + id + ", quantity=" + quantity;
 	}
-
-	
 
 }

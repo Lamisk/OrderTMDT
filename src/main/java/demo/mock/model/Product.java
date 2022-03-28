@@ -29,14 +29,17 @@ public class Product {
 //	@Pattern(regexp = "^[a-zA-Z0-9]+$", message = "Code contain special charater or space")
 //	private String code;
 
-	@Pattern(regexp = "^[a-zA-Z0-9 ]+$", message = "Address contain special charater")
+	@Pattern(regexp = "^[a-zA-Z0-9 ]+$", message = "Name contain special charater")
 	@NotNull(message = "Not null")
-	@Size(min = 2, max = 30, message = "Address 2 to 30 charaters")
+	@Size(min = 2, max = 30, message = "Name 2 to 30 charaters")
 	private String name;
-	@NotNull(message = "Name not null")
+	
+	
+	@NotNull(message = "Description not null")
 	@Column(columnDefinition = "TEXT")
 	private String des;
 
+	
 	@NotNull(message = "Price ot null")
 	@Min(value = 0, message = "Min price is 0")
 	@Max(value = 100000000, message = "Max price is 100000000")
